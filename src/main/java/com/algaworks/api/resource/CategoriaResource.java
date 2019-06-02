@@ -21,6 +21,7 @@ public class CategoriaResource {
 
     @Autowired
     private CategoriaService categoriaService;
+
     @GetMapping
     public ResponseEntity<List<Categoria>> listar () {
 
