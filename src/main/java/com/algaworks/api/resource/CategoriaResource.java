@@ -1,10 +1,13 @@
 package com.algaworks.api.resource;
 
+import com.algaworks.api.event.RecursoCriadoEvent;
 import com.algaworks.api.model.Categoria;
 import com.algaworks.api.repository.CategoriaRepository;
 import com.algaworks.api.service.CategoriaService;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,9 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService categoriaService;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @GetMapping
     public ResponseEntity<List<Categoria>> listar () {
 
@@ -35,10 +41,9 @@ public class CategoriaResource {
 
         Categoria categoriaSalva = categoriaService.criar(categoria);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
-                .buildAndExpand(categoria.getCodigo()).toUri();
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
 
-        return ResponseEntity.created(uri).body(categoriaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
     }
 
     @GetMapping(value = "/{codigo}")
