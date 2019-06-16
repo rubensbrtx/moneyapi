@@ -1,5 +1,6 @@
 package com.algaworks.api.resource.exceptions;
 
+import com.algaworks.api.service.exceptions.BadRequestException;
 import com.algaworks.api.service.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,14 @@ public class ResourceExceptionHandler {
         }
 
         return errs;
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<StandartError> badRequest(BadRequestException e, HttpServletRequest request){
+
+        StandartError err = new StandartError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
 }

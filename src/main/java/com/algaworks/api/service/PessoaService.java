@@ -26,7 +26,7 @@ public class PessoaService {
         Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 
         return pessoa.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto nao encontrado"
+                "Pessoa nao encontrada"
         ));
     }
 
@@ -45,5 +45,11 @@ public class PessoaService {
         BeanUtils.copyProperties(p, pessoa, "codigo");
 
         return pessoaRepository.save(pessoa);
+    }
+
+    public void atualizarStatusAtivo(Long codigo, Boolean ativo){
+        Pessoa pessoa = busrdarPorId(codigo);
+        pessoa.setAtivo(ativo);
+        pessoaRepository.save(pessoa);
     }
 }

@@ -8,15 +8,17 @@ spring:
   # JPA properties
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
-    generate-ddl: false
+    generate-ddl: true
     properties:
       hibernate:
         jdbc:
           lob:
             non_contextual_creation: true
+  jackson:
+    date-format: yyyy-MM-dd

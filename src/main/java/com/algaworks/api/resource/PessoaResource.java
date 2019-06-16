@@ -8,11 +8,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -66,6 +64,13 @@ public class PessoaResource {
         Pessoa p = pessoaService.atualizar(pessoa);
 
         return ResponseEntity.ok().body(p);
+    }
+
+    @PutMapping(value = "/{codigo}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizarStatus(@PathVariable Long codigo, @RequestBody Boolean ativo){
+
+        pessoaService.atualizarStatusAtivo(codigo, ativo);
     }
 
 }
